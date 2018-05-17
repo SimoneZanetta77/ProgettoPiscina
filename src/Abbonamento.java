@@ -2,6 +2,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Abbonamento implements Serializable
 {
@@ -10,16 +11,20 @@ public class Abbonamento implements Serializable
 	private String tipologia;
 	private int dataVendita;
 	private int dataScadenza;
+	private int nome;
+	private int cognome;
+	
+	
 
 
 	//costruttore 
-	public Abbonamento(int codice, String abbonato, String tipologia, int dataVendita,int dataScadenza)
+	public Abbonamento(int codice, String abbonato, String tipologia,int i, LocalDateTime dataOra1, LocalDateTime dataOra2, LocalDateTime dataOra3)
 	{
 		setCodice(codice);
 		setAbbonato(abbonato);
 		setTipologia(tipologia);
-		setDataVendita(dataVendita);
-		setDataScadenza(dataScadenza);
+		setDataVendita(i);
+		setDataScadenza(i);
 	}
 	
 	public Abbonamento(Abbonamento abbonamento)
@@ -33,6 +38,11 @@ public class Abbonamento implements Serializable
 	}
 	
 
+
+
+	public Abbonamento(int i, String string, String string2, int j, LocalDateTime dataOra2) {
+		// TODO Auto-generated constructor stub
+	}
 
 	public int getCodice()
 	{
@@ -62,7 +72,7 @@ public class Abbonamento implements Serializable
 	{
 		return dataVendita;
 	}
-	public void setDataVendita(int dataVendita) 
+	 public void setDataVendita( int dataVendita) 
 	{
 		this.dataVendita = dataVendita;
 	}
@@ -70,9 +80,29 @@ public class Abbonamento implements Serializable
 	{
 		return dataScadenza;
 	}
-	public void setDataScadenza(int dataScadenza)
+	public void setDataScadenza(int i)
 	{
-		this.dataScadenza = dataScadenza;
+		this.dataScadenza = i;
+	}
+
+	public int getNome() 
+	{
+		return nome;
+	}
+
+	public void setNome(int nome)
+	{
+		this.nome = nome;
+	}
+
+	public int getCognome() 
+	{
+		return cognome;
+	}
+
+	public void setCognome(int cognome) 
+	{
+		this.cognome = cognome;
 	}
 
 	public String toString()
@@ -93,6 +123,9 @@ public class Abbonamento implements Serializable
 	}
 
 
+
+	
+	
 
 
 

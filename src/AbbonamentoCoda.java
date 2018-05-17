@@ -67,10 +67,6 @@ public class AbbonamentoCoda
 		return risultato;
 	}
 	
-	
-	
-	
-	
 	public Abbonamento dequeue() throws AbbonamentoException
 	{
 		if (elementi==0)
