@@ -122,6 +122,11 @@ public class Abbonamento implements Serializable
 		return abbonamento;
 	}
 
+	public void setOrarioArrivo(int ora, int minuti) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	
