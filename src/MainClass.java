@@ -14,17 +14,17 @@ public class MainClass
 		ConsoleInput tastiera=new ConsoleInput();
 		int ora,minuti;
 		
-		String[] elenco= {"1-Registra Abbonamento",
-						  "2-Elimina abbonamento in scadenza",
-						  "3-Modificare ora",
-						  "4-Visualizza elenco abbonamenti in ordine alfabetico",
-						  "5-Situazione d'emergenza", 
-						  "6-Esci"};
+		String[] elenco= {"1--->Registra Nuovo Abbonamento",
+						  "2--->Rimozione di abbonamenti in scadenza",
+						  "3--->Visualizza abbonamenti in ordine di data di scadenza",
+						  "4--->Visualizza abbonamenti in ordine alfabetico",
+						  "5--->ESCI", 
+						 };
 
-		System.out.println("Benvenuto al porto navale di Catania,\nCosa desidera fare?\nSeleziona una delle voci sottostanti.\n");
-		Abbonamento a1=new Abbonamento(a1);
+		System.out.println("Benvenuto all'AcquaPlanet di Darfo B.T.,\n Cosa desidera fare? \n Seleziona una delle voci del menu.\n");
+		GestioneAbbonamento a1=new GestioneAbbonamento();
 		
-		Menu m1=new Menu(elenco);
+		Menu menu1=new Menu(elenco);
 		String nomeFile = "abbonamenti.bin";
 		LocalTime oraAttuale = null;
 		String pp=null;
@@ -33,7 +33,7 @@ public class MainClass
 		
 		try 
 		{
-			a1.caricaLista("arrivi.bin");
+			a1.caricaLista("abbonamenti.bin");
 		} 
 		catch (ClassNotFoundException | IOException e) 
 		{
@@ -42,13 +42,12 @@ public class MainClass
 		
 		do
 		{
-		sceltamenu=m1.scelta();
+		sceltamenu=menu1.scelta();
 		switch (sceltamenu) 
 		{
 			case 1:
-			System.out.println("Vuoi registrare una nuova barca? 1=Si, 2=No");
+			System.out.println("Vuoi registrare un nuovo abbonamento? 1=Si, 2=No");
 			int entrata=0;
-			GestioneAbbonamento b1=new GestioneAbbonamento(1,"Genova",22,13,true);
 			entrata=tastiera.readInt();
 			
 						
@@ -56,25 +55,37 @@ public class MainClass
 			{
 			case 1:
 				
-				System.out.println("-Inserisci codice barca: ");
-				try {
-					b1.setCodice(tastiera.readInt());
+				System.out.println("Inserisci codice abbonamento (di soli numeri): ");
+				try 
+				{
+					a1.setCodice(tastiera.readInt());
 				}
 				catch(NumberFormatException n)
 				{
-					System.out.println('\n'+"Formato non disponibile, riprova inserendo un numero..."+'\n');	
+					System.out.println('\n'+"Formato non disponibile, riprova..."+'\n');	
 				}
 				
-				System.out.println("-Inserisci il porto di provenienza: ");
-				try {
-					b1.setPortoProvenienza(tastiera.readString());
+				System.out.println("Inserisci credenziali dell'abbonato: ");
+				try
+				{
+					a1.setAbbonato(tastiera.readString());
 				}
 				catch(NumberFormatException n)
 				{
-					System.out.println('\n'+"Formato non disponibile, riprova inserendo una stringa..."+'\n');	
+					System.out.println('\n'+"Formato non disponibile, riprova..."+'\n');	
 				}
-			
-				System.out.println("-Inserisci orario di arrivo: ");
+				
+				System.out.println("Inserisci la tipologia dell'abbonamento");
+				try
+				{
+					a1.setTipologia(tastiera.readString());
+				}
+				catch(NumberFormatException n)
+				{
+					System.out.println('\n'+"Formato non disponibile, riprova..."+'\n');
+					
+				}
+				System.out.println("Inserisci orario di registrazione: ");
 				System.out.print('\t'+"-Ora:");
 				ora=tastiera.readInt();
 				System.out.print('\t'+"-Minuti:");
@@ -83,100 +94,128 @@ public class MainClass
 				try
 				{
 					oraAttuale=LocalTime.of(ora,minuti,0);
-					b1.setOrarioArrivo(oraAttuale);
+					a1.setOrario(oraAttuale);
 				}
 				catch(DateTimeException dt)
 				{
 					System.out.println('\n'+"Orario non inserito correttamente, torna al menu peincipale..."+'\n');
 				}
 
-					p1.registraBarca(b1);
-					System.out.println('\n'+"Barca registrata nel nostro software, desidera altro: "+'\n');
+					a1.registraAbbonamento(a1);
+					System.out.println('\n'+"Abbonamento registrato correttamente, desidera altro?: "+'\n');
 				try
 				{
-					p1.salvaLista("arrivi.bin");
+					a1.salvaLista("abbonamenti.bin");
 				}
 				catch(NotSerializableException n)
 				{
-					System.out.println("\n"+"Salvataggio porto non avvenuto con successo"+'\n');
+					System.out.println("\n"+"Salvataggio non avvenuto con successo"+'\n');
 				}
 				default:
 				break;
 			}
 				
 			break;
-		case 2:
-			System.out.println("Inserire il codice della barca che si vuole cambiare orario: ");
+			case 2:
+			{
+				
+				System.out.println("Inserisci il codice che vuoi eliminare: ");
+				try 
+				{
+					Abbonamento.EliminaAbbonamento(ConsoleInput().readInt());
+				} 
+				catch (NumberFormatException e) 
+				{
+					System.out.println("Formato dato inserito non corretto, eliminazione fallita");
+					break;
+				} 
+				catch (IOException e) 
+				{
+					System.out.println("Errore di lettura o scrittura");
+					break;
+				}
+				Abbonamento.salvaLista(nomeFile);
+				System.out.println("Salvataggio avvenuto con successo");
+				break;
+				}
 			
-			break;
-		case 3:
-			int codice=0;
-			System.out.println("Inserisci il codice identificativo della barca da modificare: ");
-			codice=tastiera.readInt();
-			try 
-			{
-				p1.modificaOrario(codice);
-			} 
-			catch (NumberFormatException e1) 
-			{
-				System.out.println("Formato dato inserito errato");
-			} 
-			catch (PortoException e1) 
-			{
-				System.out.println(e1.toString());
-			}
+			case 3:
+				
+				if(	a1.getElementi()==0)
+					System.out.println("Nessun abbonamento...");
+				else
+				{
+					System.out.println("Visualizza abbonamenti in base all'ordine alfabetico");
+					try 
+					{
+						a1=Ordinatore.selectionSortCrescenteAlfabetoNodi(a1);
+						
+						System.out.println(a1.toString());
+					}
+					catch (AbbonamentoException e) 
+					{
+						System.out.println(e.toString());
+					} 
+					catch (ClassNotFoundException e) 
+					{
+						System.out.println("Impossibile caricare oggetti");
+					}
+					catch (IOException e) 
+					{
+						System.out.println("Impossibile completare il caricamento delle visite");
+					}
+					catch (FileException e) 
+					{
+						System.out.println("File non trovato");
+					}
+				}
+				
+				break;	
 			
-			break;
+				
+				
+			
 		case 4:
-			System.out.println("Visualizza elenco barche in base agli orari: "+'\n');
-			try {
-				p1=Ordinatore.selectionSortCrescenteNodi(p1);
-				System.out.println("visualizzazione orari barca in ordine di tempo:");
-				System.out.println(p1.toString());
-			} catch (PortoException e) {
+			
+			System.out.println("Visualizza elenco abbonamenti in base agli orari: "+'\n');
+			try
+			{
+				a1=Ordinatore.selectionSortCrescenteNodi(a1);
+				System.out.println("visualizzazione abbonamenti in ordine di tempo:");
+				Object abbonCopia = null;
+				System.out.println(abbonCopia.toString());
+			} 
+			catch (AbbonamentoException e)
+			{
 				System.out.println(e.toString());
-			} catch (ClassNotFoundException e) {
-				System.out.println("Impossibile caricare oggetti di tipo porto");
-			} catch (IOException e) {
-				System.out.println("Impossibile completare il caricamento delle barche");
-			} catch (FileException e) {
+			} catch (ClassNotFoundException e) 
+			{
+				System.out.println("Impossibile caricare oggetti di tipo abbonamento");
+			} catch (IOException e) 
+			{
+				System.out.println("Impossibile completare il caricamento di abbonamenti");
+			} catch (FileException e) 
+			{
 				System.out.println("File non trovato");
 			}
-			break;
-		case 5:
-			System.out.println("Quale barca ha la situazione d'emergenza, inserisci il suo codice: ");
 			
-			break;
-		case 6:
-			System.out.println("Di che città proveniente vuoi visualizzare la serie di barche: ");
-			String nome=tastiera.readString();
-			Barca[] elencoBarche;
-			try {
-				elencoBarche=p1.visualizzaPorto(nome);
-				for (int i = 0; i < elencoBarche.length; i++) 
-				{
-					System.out.println(elencoBarche[i].toString());
-				}
-			} catch (PortoException e)
-			{
-				e.toString();
-			}
-			 catch (NullPointerException e)
-			{
-				System.out.println('\n'+"Nessuna barca è in arrivo da "+nome+'\n');
-	
-			}
-			
-			
-		default:
+		
 			break;
 		}
-		}while(sceltamenu!=0);
+		}
 		
+		while(sceltamenu!=0);
+		
+	}
+
+	private static ConsoleInput ConsoleInput() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
 
-
-
+	
+		
+		
 
